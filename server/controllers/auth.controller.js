@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const verifyLinearUser = require('/utils/linearAuth');
+const verifyLinearUser = require('../utils/linearAuth');
 
 exports.login = async (req, res) => {
   try {
@@ -7,6 +7,11 @@ exports.login = async (req, res) => {
 
     if (!email) {
       return res.status(400).json({ error: "Email is required" });
+    }
+
+    if (!process.env.JWT_SECRET) {
+      console.error('FATAL: JWT_SECRET is not set in environment variables');
+      return res.status(500).json({ error: "Server misconfiguration" });
     }
 
     const user = await verifyLinearUser(email);

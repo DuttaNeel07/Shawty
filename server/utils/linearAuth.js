@@ -4,9 +4,9 @@ const verifyLinearUser = async (email) => {
 
     const query = {
       query: `
-        query CheckActiveUserMembership {
+        query CheckActiveUserMembership($email: String!) {
           users(filter: { 
-            email: { eq: "${email}" },
+            email: { eq: $email },
             active: { eq: true }
           }) {
             nodes {
@@ -17,6 +17,7 @@ const verifyLinearUser = async (email) => {
           }
         }
       `,
+      variables: { email },
     };
 
     const response = await fetch("https://api.linear.app/graphql", {
