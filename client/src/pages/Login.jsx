@@ -7,9 +7,9 @@ function Login() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
-  const { login, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
@@ -21,9 +21,8 @@ function Login() {
     setLoading(true);
 
     try {
-      const data = await loginUser(email);
-      login(data.token);
-      navigate("/dashboard");
+      await loginUser(email);
+      setEmailSent(true);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -40,31 +39,47 @@ function Login() {
           <p className="login-subtitle">URL Shortener — Members Only</p>
         </div>
 
-        <form onSubmit={handleLogin} className="login-form">
-          <div className="form-group">
-            <label htmlFor="email">Club Email</label>
-            <input
-              id="email"
-              type="email"
-              placeholder="you@pointblank.club"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoFocus
-              disabled={loading}
-            />
+        {emailSent ? (
+          <div className="login-success-state">
+            <div className="success-icon" style={{ fontSize: '48px', marginBottom: '16px', color: 'var(--green)' }}>✉️</div>
+            <h2 style={{ fontSize: '20px', marginBottom: '8px' }}>Check your email</h2>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
+              We sent a magic link to <strong style={{ color: 'var(--text-primary)' }}>{email}</strong>. 
+              Click the link to sign in.
+            </p>
+            <button className="btn btn-ghost" onClick={() => setEmailSent(false)}>
+              Try a different email
+            </button>
           </div>
+        ) : (
+          <form onSubmit={handleLogin} className="login-form">
+            <div className="form-group">
+              <label htmlFor="email">Club Email</label>
+              <input
+                id="email"
+                type="email"
+                placeholder="you@pointblank.club"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoFocus
+                disabled={loading}
+              />
+            </div>
 
-          <button className="btn btn-primary btn-full" type="submit" disabled={loading}>
-            {loading ? "Verifying..." : "Login with Linear"}
-          </button>
-        </form>
+            <button className="btn btn-primary btn-full" type="submit" disabled={loading}>
+              {loading ? "Sending link..." : "Send Magic Link"}
+            </button>
+          </form>
+        )}
 
         {error && <p className="login-error">{error}</p>}
 
-        <p className="login-footer">
-          Access is verified against your Linear workspace membership.
-        </p>
+        {!emailSent && (
+          <p className="login-footer">
+            Access is verified against your Linear workspace membership.
+          </p>
+        )}
       </div>
     </div>
   );
