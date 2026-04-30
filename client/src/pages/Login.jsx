@@ -34,9 +34,9 @@ function Login() {
     <div className="login-page">
       <div className="login-card">
         <div className="login-brand">
-          <span className="login-logo">pb</span>
+          <span className="login-logo">PB</span>
           <h1>pointblank.club</h1>
-          <p className="login-subtitle">URL Shortener — Members Only</p>
+          <p className="login-subtitle">URL Shortener for PB members</p>
         </div>
 
         {emailSent ? (
@@ -54,11 +54,11 @@ function Login() {
         ) : (
           <form onSubmit={handleLogin} className="login-form">
             <div className="form-group">
-              <label htmlFor="email">Club Email</label>
+              <label htmlFor="email">email</label>
               <input
                 id="email"
                 type="email"
-                placeholder="you@pointblank.club"
+                placeholder="email@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -68,7 +68,7 @@ function Login() {
             </div>
 
             <button className="btn btn-primary btn-full" type="submit" disabled={loading}>
-              {loading ? "Sending link..." : "Send Magic Link"}
+              {loading ? "Sending link..." : "Send verification Link"}
             </button>
           </form>
         )}

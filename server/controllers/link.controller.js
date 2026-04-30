@@ -132,7 +132,7 @@ exports.redirect = async (req, res) => {
       return res.status(404).send('Link not found or expired');
     }
 
-    res.redirect(302, link.destination);
+    res.redirect(301, link.destination);
   } catch (error) {
     res.status(500).send('Server error');
   }

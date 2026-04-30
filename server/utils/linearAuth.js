@@ -3,42 +3,38 @@ const verifyLinearUser = async (email) => {
     if (!email) return null;
 
     const query = {
-      query: `
-        query CheckActiveUserMembership($email: String!) {
-          users(filter: { 
-            email: { eq: $email },
-            active: { eq: true }
-          }) {
-            nodes {
-              id
-              name
-              email
-            }
-          }
-        }
-      `,
-      variables: { email },
+      query: `query CheckActiveUserMembership {
+  users(filter: { 
+    email: { eq: "${email}" },
+    active: { eq: true }
+  }) {
+    nodes {
+      id
+      name
+      email
+    }
+  }
+}
+`,
     };
 
     const response = await fetch("https://api.linear.app/graphql", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.LINEAR_API_KEY}`,
+        Authorization: process.env.LINEAR_API_KEY,
       },
       body: JSON.stringify(query),
     });
 
-    const result = await response.json();
+    const { data } = await response.json();
 
-    const user = result?.data?.users?.nodes?.[0];
-
-    if (!user?.email) return null;
+    if (!data.users.nodes[0]?.email) return null;
 
     return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
+      id: data.users.nodes[0].id,
+      name: data.users.nodes[0].name,
+      email: data.users.nodes[0].email,
     };
 
   } catch (error) {

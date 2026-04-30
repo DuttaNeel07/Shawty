@@ -20,19 +20,28 @@ const sendVerificationEmail = async (to, name, token) => {
       },
     });
 
-    await transporter.sendMail({
-      to,
-      from: `Webadmin - Point Blank <${process.env.MAIL_USER}>`,
-      subject: "Point Blank - Login Link",
-      html: `<p>Hello ${name},</p>
+    transporter.verify((error) => {
+      if (error) console.log("Transporter verification error:", error);
+    });
+
+    transporter.sendMail(
+      {
+        to,
+        from: `Webadmin - Point Blank <${process.env.MAIL_USER}>`,
+        subject: "Point Blank - Login Link",
+        html: `<p>Hello ${name},</p>
 <p>Click the link below to sign in to the URL shortener:</p>
 <a href="${verificationLink}">Sign In to URL Shortener</a>
 <p>This link will expire in 15 minutes (i.e., ${new Date(Date.now() + 15 * 60 * 1000).toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" })} IST).</p>
 <p>If you did not request this, please ignore this email.</p>
 <p>Best regards,<br/>Team Point Blank</p>`,
-      text: `Hello ${name},\n\nClick the link below to sign in to the URL shortener:\n\n${verificationLink}\n\nThis link will expire in 15 minutes (i.e., ${new Date(Date.now() + 15 * 60 * 1000).toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" })} IST).\n\nIf you did not request this, please ignore this email.\n\nBest regards,\nTeam Point Blank`,
-    });
-    
+        text: `Hello ${name},\n\nClick the link below to sign in to the URL shortener:\n\n${verificationLink}\n\nThis link will expire in 15 minutes (i.e., ${new Date(Date.now() + 15 * 60 * 1000).toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" })} IST).\n\nIf you did not request this, please ignore this email.\n\nBest regards,\nTeam Point Blank`,
+      },
+      (error, info) => {
+        if (error) console.error("Error sending email:", error);
+      },
+    );
+
     return true;
   } catch (error) {
     console.error("Error sending email:", error);
@@ -63,7 +72,6 @@ exports.login = async (req, res) => {
     // Create 15-minute token
     const token = jwt.sign(
       {
-        id: user.id,
         email: user.email,
         name: user.name,
       },
@@ -98,18 +106,20 @@ exports.verify = async (req, res) => {
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
     } catch (err) {
+      if (err instanceof jwt.TokenExpiredError) {
+        return res.status(401).json({ error: "Login link has expired" });
+      }
       return res.status(401).json({ error: "Invalid or expired login link" });
     }
 
-    // Issue a 7-day session token using SESSION_SECRET
+    // Issue a 1-day session token using SESSION_SECRET
     const sessionToken = jwt.sign(
       {
-        id: decoded.id,
         email: decoded.email,
         name: decoded.name,
       },
       process.env.SESSION_SECRET,
-      { expiresIn: '7d' }
+      { expiresIn: '1d' }
     );
 
     // Return the new session token to the client
