@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* ─── Design Tokens ─── */
+
 :root {
   --bg-primary: #0a0a0f;
   --bg-secondary: #12121a;
@@ -15,7 +15,7 @@
   --text-secondary: #8b8b9e;
   --text-muted: #5c5c6f;
 
-  --accent: #7c5cfc;
+  --accent: #1eb735;
   --accent-hover: #6a48e8;
   --accent-subtle: rgba(124, 92, 252, 0.12);
   --accent-border: rgba(124, 92, 252, 0.3);
@@ -50,7 +50,7 @@
   --transition: 150ms ease;
 }
 
-/* ─── Reset ─── */
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -135,7 +135,6 @@ body {
   width: 100%;
 }
 
-/* ─── Form Elements ─── */
 label {
   display: block;
   font-size: 12px;
@@ -227,7 +226,6 @@ input::placeholder {
   box-shadow: none;
 }
 
-/* ─── Navbar ─── */
 .navbar {
   display: flex;
   align-items: center;
@@ -296,7 +294,6 @@ input::placeholder {
   font-weight: 500;
 }
 
-/* ─── Login Page ─── */
 .login-page {
   min-height: 100vh;
   display: flex;
@@ -422,7 +419,7 @@ input::placeholder {
   margin-bottom: 16px;
 }
 
-/* ─── Link Table ─── */
+
 .link-table-wrap {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
@@ -524,7 +521,6 @@ input::placeholder {
   font-size: 13px;
 }
 
-/* ─── Badges ─── */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -567,7 +563,6 @@ input::placeholder {
   cursor: default;
 }
 
-/* ─── States ─── */
 .empty-state {
   text-align: center;
   padding: 48px 24px;
@@ -599,7 +594,6 @@ input::placeholder {
   to { transform: rotate(360deg); }
 }
 
-/* ─── Responsive ─── */
 @media (max-width: 768px) {
   .navbar {
     padding: 12px 16px;

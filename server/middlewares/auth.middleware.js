@@ -10,7 +10,8 @@ module.exports = (req, res, next) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // API routes now verify against SESSION_SECRET since these are long-lived tokens
+    const decoded = jwt.verify(token, process.env.SESSION_SECRET);
     req.user = decoded;   
     next();               
   } catch {

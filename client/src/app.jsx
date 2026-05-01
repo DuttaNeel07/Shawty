@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
+import Verify from "./pages/Verify";
 import Dashboard from "./pages/Dashboard";
 
 function ProtectedRoute({ children }) {
@@ -14,6 +15,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/verify" element={<Verify />} />
         <Route
           path="/dashboard"
           element={
