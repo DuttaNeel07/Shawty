@@ -28,7 +28,7 @@ const sendVerificationEmail = async (to, name, token) => {
       {
         to,
         from: `Webadmin - Point Blank <${process.env.MAIL_USER}>`,
-        subject: "Point Blank - Login Link",
+        subject: "Point Blank - Login Link for Link shortner",
         html: `<p>Hello ${name},</p>
 <p>Click the link below to sign in to the URL shortener:</p>
 <a href="${verificationLink}">Sign In to URL Shortener</a>
