@@ -1,17 +1,17 @@
 package service
 
 import (
-	"fmt"
-	"io"
-	"net/http"
+	"crypto/md5"
+	"encoding/hex"
 )
 
-func GetRoot(w http.ResponseWriter, r *http.Request){
-	fmt.Printf("got / request\n")
-	io.WriteString(w, "This is my website\n")
-}
+func CreateHash(url string) string{
+	data := []byte(url)
+	hasher := md5.New()
+	hasher.Write(data)
+	hashBytes := hasher.Sum(nil)
+	hashString := hex.EncodeToString(hashBytes)
+	hashString = hashString[:8]
 
-func GetHello(w http.ResponseWriter, r *http.Request){
-	fmt.Printf("got / Hello Request\n")
-	io.WriteString(w, "Hello, HTTP!\n")
+	return hashString
 }

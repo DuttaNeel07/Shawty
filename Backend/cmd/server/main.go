@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"github.com/DuttaNeel07/Shawty/internal/service"
+	"github.com/DuttaNeel07/Shawty/internal/handler"
 )
 
 func main(){
-	http.HandleFunc("/", service.GetRoot)
-	http.HandleFunc("/hello", service.GetHello)
+	http.HandleFunc("/", handler.FindLink)
+	http.HandleFunc("/shorten", handler.Shorten)
+
 
 	err:= http.ListenAndServe(":8000", nil)
 	if errors.Is(err, http.ErrServerClosed) {
