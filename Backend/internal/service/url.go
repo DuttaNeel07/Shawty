@@ -12,6 +12,5 @@ func CreateHash(url string) string{
 	hashBytes := hasher.Sum(nil)
 	hashString := hex.EncodeToString(hashBytes)
 	hashString = hashString[:8]
-
 	return hashString
 }
