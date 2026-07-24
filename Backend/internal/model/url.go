@@ -36,6 +36,6 @@ func allLinks() ([]links, error){
 		if err = rows.Err(); err != nil{
 			return nil, err
 		}
-		return bks, nil
+		return lnks, nil
 	}
 }
